@@ -1,17 +1,22 @@
 import { useState } from 'react';
-import { Calendar, Grid3X3, Search, Plus, Filter } from 'lucide-react';
+import { Calendar, Grid3X3, Search, Plus, Filter, FileSpreadsheet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { realAudiencias as audiencias } from '../data/realData';
+import { realAudiencias } from '../data/realData';
 import CalendarView from './CalendarView';
 import AudienciaCard from './AudienciaCard';
+import NovaAudienciaModal from './NovaAudienciaModal';
+import ImportarLoteModal from './ImportarLoteModal';
 
 const Audiencias = () => {
   const [viewMode, setViewMode] = useState('cards'); // 'cards' ou 'calendar'
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAudiencia, setSelectedAudiencia] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
+  const [audiencias, setAudiencias] = useState(realAudiencias);
+  const [isNovaAudienciaOpen, setIsNovaAudienciaOpen] = useState(false);
+  const [isImportarLoteOpen, setIsImportarLoteOpen] = useState(false);
 
   const filteredAudiencias = audiencias.filter(audiencia => {
     const matchesSearch = 
@@ -37,6 +42,14 @@ const Audiencias = () => {
   const handleDeleteAudiencia = (audiencia) => {
     console.log('Excluir audiência:', audiencia);
     // TODO: Implementar confirmação de exclusão
+  };
+
+  const handleSaveNovaAudiencia = (novaAudiencia) => {
+    setAudiencias(prev => [...prev, novaAudiencia]);
+  };
+
+  const handleImportarLote = (audienciasImportadas) => {
+    setAudiencias(prev => [...prev, ...audienciasImportadas]);
   };
 
   const statusOptions = [
@@ -186,10 +199,23 @@ const Audiencias = () => {
               className="pl-10 w-full sm:w-80"
             />
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            <Plus className="h-4 w-4 mr-2" />
-            Nova Audiência
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              onClick={() => setIsNovaAudienciaOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Nova Audiência
+            </Button>
+            <Button 
+              onClick={() => setIsImportarLoteOpen(true)}
+              variant="outline"
+              className="border-green-600 text-green-600 hover:bg-green-50"
+            >
+              <FileSpreadsheet className="h-4 w-4 mr-2" />
+              Importar em Lote
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -254,6 +280,20 @@ const Audiencias = () => {
       <AudienciaModal
         audiencia={selectedAudiencia}
         onClose={() => setSelectedAudiencia(null)}
+      />
+
+      {/* Modal Nova Audiência */}
+      <NovaAudienciaModal
+        isOpen={isNovaAudienciaOpen}
+        onClose={() => setIsNovaAudienciaOpen(false)}
+        onSave={handleSaveNovaAudiencia}
+      />
+
+      {/* Modal Importar em Lote */}
+      <ImportarLoteModal
+        isOpen={isImportarLoteOpen}
+        onClose={() => setIsImportarLoteOpen(false)}
+        onImport={handleImportarLote}
       />
     </div>
   );
