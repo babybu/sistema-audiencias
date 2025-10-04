@@ -25,9 +25,17 @@ function App() {
   };
 
   return (
-    <Layout currentPage={currentPage} onPageChange={setCurrentPage}>
-      {renderPage()}
-    </Layout>
+    <>
+      {/* Barra de ambiente DEV */}
+      <div className="w-full bg-emerald-600 text-white text-sm px-3 py-2 flex items-center justify-between">
+        <span>Sistema de Audiências — Ambiente de Desenvolvimento</span>
+        <span className="opacity-80">build local</span>
+      </div>
+
+      <Layout currentPage={currentPage} onPageChange={setCurrentPage}>
+        {renderPage()}
+      </Layout>
+    </>
   );
 }
 
