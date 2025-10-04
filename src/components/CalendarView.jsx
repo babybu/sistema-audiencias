@@ -15,6 +15,22 @@ const CalendarView = ({ audiencias, onSelectAudiencia }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  // Função para formatar data brasileira
+  const formatBrazilianDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
+  // Função para formatar data e hora brasileira
+  const formatBrazilianDateTime = (dateString, timeString) => {
+    const formattedDate = formatBrazilianDate(dateString);
+    return `${formattedDate} ${timeString || '09:00'}`;
+  };
+
   // Converter audiências para eventos do calendário
   const events = audiencias.map(audiencia => ({
     id: audiencia.id,
@@ -78,7 +94,7 @@ const CalendarView = ({ audiencias, onSelectAudiencia }) => {
                   <Clock className="h-4 w-4 text-blue-600" />
                   <div>
                     <p className="text-sm font-medium">Data e Hora</p>
-                    <p className="text-sm text-gray-600">{audiencia.data} às {audiencia.hora}</p>
+                    <p className="text-sm text-gray-600">{formatBrazilianDateTime(audiencia.data, audiencia.hora)}</p>
                   </div>
                 </div>
               </div>
