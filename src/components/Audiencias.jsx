@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Calendar, List, Search, Plus, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { audiencias } from '../data/mockData';
+import { realAudiencias as audiencias } from '../data/realData';
 
 const Audiencias = () => {
   const [viewMode, setViewMode] = useState('list'); // 'list' ou 'calendar'
